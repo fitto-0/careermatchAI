@@ -8,7 +8,7 @@ export default function Hero() {
 
         <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl">
           Know how well your{" "}
-          <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
             CV matches
           </span>{" "}
           the job.

@@ -10,7 +10,7 @@ export default function ResultCard({
   icon,
 }: ResultCardProps) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+    <div className="rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-xl">
       <div className="mb-5 flex items-center gap-3">
         {icon && (
           <span className="text-xl">

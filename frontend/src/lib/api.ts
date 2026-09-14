@@ -1,10 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export interface AnalyzeRequest {
-  cv_text: string;
-  job_description: string;
-}
-
 export interface AnalysisResult {
   match_score: number;
   compatibility: string;
@@ -17,14 +12,25 @@ export interface AnalysisResult {
 }
 
 export async function analyzeCandidate(
-  data: AnalyzeRequest,
+  jobDescription: string,
+  cvText: string,
+  cvFile: File | null,
 ): Promise<AnalysisResult> {
+  const formData = new FormData();
+
+  formData.append("job_description", jobDescription);
+
+  if (cvText.trim()) {
+    formData.append("cv_text", cvText);
+  }
+
+  if (cvFile) {
+    formData.append("cv_file", cvFile);
+  }
+
   const response = await fetch(`${API_URL}/api/analyze`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    body: formData,
   });
 
   const result = await response.json();
