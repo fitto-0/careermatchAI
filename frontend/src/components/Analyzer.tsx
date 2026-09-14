@@ -25,6 +25,31 @@ export default function Analyzer() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const insightCards = result
+    ? [
+        {
+          label: "Top strength",
+          value: result.strengths[0] || "Strong overall profile",
+          tone: "violet",
+        },
+        {
+          label: "Biggest gap",
+          value: result.missing_skills[0] || "No major gaps detected",
+          tone: "amber",
+        },
+        {
+          label: "Best match",
+          value: result.matching_skills[0] || "Core role alignment",
+          tone: "cyan",
+        },
+        {
+          label: "Next move",
+          value: result.recommendations[0] || "Keep refining your positioning",
+          tone: "fuchsia",
+        },
+      ]
+    : [];
+
   // ----------------------------------------------
   // Handle file
   // ----------------------------------------------
@@ -310,6 +335,36 @@ export default function Analyzer() {
                 </p>
               </div>
             </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {insightCards.map((item) => (
+              <div
+                key={item.label}
+                className="soft-card rounded-3xl p-5 text-left transition hover:-translate-y-1 hover:border-violet-400/30"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+                    {item.label}
+                  </span>
+                  <span
+                    className={`h-2.5 w-2.5 rounded-full ${
+                      item.tone === "violet"
+                        ? "bg-violet-400"
+                        : item.tone === "amber"
+                          ? "bg-amber-400"
+                          : item.tone === "cyan"
+                            ? "bg-cyan-400"
+                            : "bg-fuchsia-400"
+                    }`}
+                  />
+                </div>
+
+                <p className="text-sm leading-relaxed text-slate-200">
+                  {item.value}
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
