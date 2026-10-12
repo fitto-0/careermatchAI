@@ -121,13 +121,13 @@ export default function Home() {
               <div key={column.title}>
                 <p className="label mb-5">{column.title}</p>
 
-                <ul className="space-y-3 text-[13px] text-zinc-200">
+                <ul className="space-y-3 text-sm text-zinc-200">
                   {column.links.map((link) => (
                     <li key={link.label}>
                       {"href" in link && link.href ? (
                         <a
                           href={link.href}
-                          className="transition hover:text-zinc-500"
+                          className="transition hover:text-zinc-400"
                         >
                           {link.label}
                         </a>
@@ -168,7 +168,7 @@ function SectionHeading({
         {index} — {label}
       </p>
 
-      <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-500">
+      <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-400">
         {children}
       </h2>
     </div>
@@ -191,7 +191,7 @@ function Feature({
       <div>
         <h3 className="text-lg text-white">{title}</h3>
 
-        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
+        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-400">
           {description}
         </p>
       </div>
@@ -214,7 +214,7 @@ function Step({
 
       <h3 className="mt-8 text-lg text-white">{title}</h3>
 
-      <p className="mt-2 text-sm leading-6 text-zinc-500">{description}</p>
+      <p className="mt-2 text-sm leading-6 text-zinc-400">{description}</p>
     </div>
   );
 }

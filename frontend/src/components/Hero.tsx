@@ -13,7 +13,7 @@ export default function Hero() {
 
       <div className="container-main relative mt-auto pb-16 pt-28 md:pb-20">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-          <h1 className="fade-up font-mono text-[clamp(1.75rem,5.2vw,4.2rem)] font-light leading-[1.08] tracking-[-0.03em] text-zinc-500">
+          <h1 className="fade-up font-mono text-[clamp(1.75rem,5.2vw,4.2rem)] font-light leading-[1.08] tracking-[-0.03em] text-zinc-400">
             Know if your <span className="text-white">profile</span>
             <br />
             fits the job

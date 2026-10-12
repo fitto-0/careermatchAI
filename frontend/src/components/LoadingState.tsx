@@ -30,7 +30,7 @@ export default function LoadingState() {
             className="step-reveal flex gap-4"
             style={{ animationDelay: `${index * 1.4}s` }}
           >
-            <span className="text-zinc-500">0{index + 1}</span>
+            <span className="text-zinc-400">0{index + 1}</span>
             {step}
           </li>
         ))}

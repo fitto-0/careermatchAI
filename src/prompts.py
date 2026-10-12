@@ -29,6 +29,19 @@ Rules:
 - Give a realistic compatibility evaluation.
 - The match score must be between 0 and 100.
 - Return ONLY valid JSON.
+
+Writing style (the result is shown to the candidate, keep it easy to scan):
+
+- Speak directly to the candidate using "you" and "your".
+- "compatibility" is one of: "Excellent match", "Strong match",
+  "Moderate match", "Weak match", "Poor match".
+- "summary" is 2 to 3 short, plain sentences.
+- "strengths" and "weaknesses": 3 to 5 items each, one sentence
+  of at most 15 words, no filler.
+- "matching_skills" and "missing_skills": short skill names only
+  (1 to 4 words, e.g. "React", "Team leadership"), no sentences.
+- "recommendations": 3 to 5 concrete actions, each starting with
+  a verb (e.g. "Add", "Highlight", "Learn"), at most 20 words.
             """,
         ),
         (

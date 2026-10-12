@@ -5,8 +5,7 @@ import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 import { analyzeCandidate, AnalysisResult } from "@/lib/api";
 
 import LoadingState from "./LoadingState";
-import ScoreCircle from "./ScoreCircle";
-import ResultCard from "./ResultCard";
+import Results from "./Results";
 
 export default function Analyzer() {
   const [cvText, setCvText] = useState("");
@@ -26,27 +25,6 @@ export default function Analyzer() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resultsRef = useRef<HTMLDivElement>(null);
-
-  const insights = result
-    ? [
-        {
-          label: "Top strength",
-          value: result.strengths[0] || "Strong overall profile",
-        },
-        {
-          label: "Biggest gap",
-          value: result.missing_skills[0] || "No major gaps detected",
-        },
-        {
-          label: "Best match",
-          value: result.matching_skills[0] || "Core role alignment",
-        },
-        {
-          label: "Next move",
-          value: result.recommendations[0] || "Keep refining your positioning",
-        },
-      ]
-    : [];
 
   useEffect(() => {
     if (result) {
@@ -171,7 +149,7 @@ export default function Analyzer() {
         <div className="mb-16 md:mb-20">
           <p className="label mb-6">03 — Analyzer</p>
 
-          <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-500">
+          <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-400">
             Compare your <span className="text-white">profile</span>
             <br />
             with the role you want.
@@ -234,7 +212,7 @@ export default function Analyzer() {
               <div className="flex items-center justify-between gap-4 border border-white/20 px-4 py-3">
                 <div className="min-w-0">
                   <p className="truncate text-sm text-white">{cvFile.name}</p>
-                  <p className="font-mono text-xs text-zinc-500">
+                  <p className="font-mono text-xs text-zinc-400">
                     {(cvFile.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
@@ -261,7 +239,7 @@ export default function Analyzer() {
                   onChange={(event) => setCvText(event.target.value)}
                   placeholder="Paste your CV text here..."
                   aria-label="CV text"
-                  className="min-h-56 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-600 focus:border-white/40"
+                  className="min-h-56 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-500 focus:border-white/40"
                 />
               </>
             )}
@@ -278,7 +256,7 @@ export default function Analyzer() {
               onChange={(event) => setJobDescription(event.target.value)}
               placeholder="Paste the job description here..."
               aria-label="Job description"
-              className="min-h-96 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-600 focus:border-white/40"
+              className="min-h-96 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-500 focus:border-white/40"
             />
           </div>
         </div>
@@ -308,53 +286,7 @@ export default function Analyzer() {
 
         {result && !loading && (
           <div ref={resultsRef} id="insights" className="scroll-mt-20 pt-24">
-            <p className="label mb-10">04 — Result</p>
-
-            <div className="grid gap-12 border-b border-white/10 pb-16 lg:grid-cols-2 lg:gap-20">
-              <ScoreCircle score={result.match_score} />
-
-              <div className="lg:pt-4">
-                <p className="label">Compatibility</p>
-
-                <h3 className="mt-4 font-mono text-3xl font-light tracking-tight text-white md:text-4xl">
-                  {result.compatibility}
-                </h3>
-
-                <p className="mt-6 leading-7 text-zinc-400">
-                  {result.summary}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 border-b border-white/10 py-12 sm:grid-cols-2 lg:grid-cols-4">
-              {insights.map((item) => (
-                <div key={item.label}>
-                  <p className="label mb-4">{item.label}</p>
-                  <p className="text-[13px] leading-6 text-zinc-200">
-                    {item.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-16 grid gap-px border border-white/10 bg-white/10 md:grid-cols-2">
-              <ResultCard title="Strengths" items={result.strengths} />
-              <ResultCard title="Weaknesses" items={result.weaknesses} />
-              <ResultCard
-                title="Matching skills"
-                items={result.matching_skills}
-              />
-              <ResultCard
-                title="Missing skills"
-                items={result.missing_skills}
-              />
-              <div className="md:col-span-2">
-                <ResultCard
-                  title="Recommendations"
-                  items={result.recommendations}
-                />
-              </div>
-            </div>
+            <Results result={result} />
           </div>
         )}
       </div>
