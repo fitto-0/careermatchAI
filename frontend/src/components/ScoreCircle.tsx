@@ -2,61 +2,39 @@ interface ScoreCircleProps {
   score: number;
 }
 
+const TICKS = 50;
+
 export default function ScoreCircle({ score }: ScoreCircleProps) {
-  const safeScore = Math.min(100, Math.max(0, score));
-  const circumference = 2 * Math.PI * 56;
-  const dashOffset = circumference - (safeScore / 100) * circumference;
+  const safeScore = Math.round(Math.min(100, Math.max(0, score)));
+  const lit = Math.round((safeScore / 100) * TICKS);
 
   return (
-    <div className="relative flex h-48 w-48 items-center justify-center">
-      <svg
-        className="absolute inset-0 h-full w-full -rotate-90"
-        viewBox="0 0 140 140"
-      >
-        <circle
-          cx="70"
-          cy="70"
-          r="56"
-          stroke="rgba(148, 163, 184, 0.12)"
-          strokeWidth="10"
-          fill="transparent"
-        />
-        <circle
-          cx="70"
-          cy="70"
-          r="56"
-          stroke="url(#matchGradient)"
-          strokeWidth="10"
-          fill="transparent"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={dashOffset}
-          style={{ transition: "stroke-dashoffset 1s ease" }}
-        />
-        <defs>
-          <linearGradient
-            id="matchGradient"
-            x1="0%"
-            x2="100%"
-            y1="0%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="50%" stopColor="#d946ef" />
-            <stop offset="100%" stopColor="#22d3ee" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div>
+      <div className="flex items-baseline gap-3 font-mono">
+        <span className="text-[clamp(5rem,14vw,9rem)] font-light leading-none tracking-[-0.06em] text-white">
+          {safeScore}
+        </span>
 
-      <div className="glow-ring flex h-32 w-32 items-center justify-center rounded-full border border-white/10 bg-slate-950/90 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
-        <div className="text-center">
-          <div className="text-4xl font-black tracking-tight text-white">
-            {safeScore}%
-          </div>
-          <div className="mt-1 text-[10px] uppercase tracking-[0.28em] text-slate-400">
-            Match
-          </div>
-        </div>
+        <span className="text-lg text-zinc-500">/100</span>
+      </div>
+
+      <div
+        className="mt-6 flex gap-0.75"
+        role="meter"
+        aria-label="Match score"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={safeScore}
+      >
+        {Array.from({ length: TICKS }, (_, index) => (
+          <span
+            key={index}
+            className={`h-5 flex-1 transition-colors duration-500 ${
+              index < lit ? "bg-white" : "bg-white/10"
+            }`}
+            style={{ transitionDelay: `${index * 15}ms` }}
+          />
+        ))}
       </div>
     </div>
   );

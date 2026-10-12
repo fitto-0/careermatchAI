@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
 :root {
-  --background: #0b0b0d;
-  --foreground: #f5f3ef;
-  --muted: #a1a1aa;
+  --background: #0a0a0a;
+  --foreground: #f5f5f4;
+  --muted: #71717a;
   --border: rgba(255, 255, 255, 0.1);
-  --accent: #a78bfa;
 }
 
 * {
@@ -20,12 +24,16 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
 }
 
 ::selection {
-  background: rgba(167, 139, 250, 0.3);
-  color: white;
+  background: rgba(255, 255, 255, 0.85);
+  color: #0a0a0a;
 }
 
 button,
@@ -34,28 +42,25 @@ textarea {
   font: inherit;
 }
 
-textarea {
-  resize: vertical;
-}
-
 .container-main {
-  width: min(1120px, calc(100% - 40px));
-  margin: 0 auto;
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
 }
 
-.subtle-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
+.label {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .fade-up {
-  animation: fadeUp 0.7s ease-out both;
+  animation: fadeUp 0.9s ease-out both;
 }
 
 .fade-up-delay {
-  animation: fadeUp 0.7s 0.12s ease-out both;
+  animation: fadeUp 0.9s 0.15s ease-out both;
 }
 
 @keyframes fadeUp {
@@ -67,6 +72,34 @@ textarea {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Loading: ticks pulse in a travelling wave */
+.tick-wave {
+  animation: tickWave 1.6s ease-in-out infinite;
+}
+
+@keyframes tickWave {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Loading: each step brightens in turn */
+.step-reveal {
+  opacity: 0.25;
+  animation: stepReveal 0.6s ease-out forwards;
+}
+
+@keyframes stepReveal {
+  to {
+    opacity: 1;
   }
 }
 

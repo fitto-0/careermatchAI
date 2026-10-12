@@ -2,87 +2,111 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Analyzer from "@/components/Analyzer";
 
+const footerColumns = [
+  {
+    title: "Product",
+    links: [
+      { label: "Analyzer", href: "#analyzer" },
+      { label: "How it works", href: "#how-it-works" },
+      { label: "Features", href: "#features" },
+    ],
+  },
+  {
+    title: "Analysis",
+    links: [
+      { label: "Match score", href: "#features" },
+      { label: "Strengths", href: "#features" },
+      { label: "Skill gaps", href: "#features" },
+      { label: "Recommendations", href: "#features" },
+    ],
+  },
+  {
+    title: "Built with",
+    links: [
+      { label: "Next.js" },
+      { label: "FastAPI" },
+      { label: "LangChain" },
+      { label: "Groq" },
+    ],
+  },
+  {
+    title: "Get started today",
+    links: [
+      { label: "Upload your CV", href: "#analyzer" },
+      { label: "Paste a job description", href: "#analyzer" },
+      { label: "Get your match", href: "#analyzer" },
+    ],
+  },
+];
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0b0b0d] text-[#f5f3ef]">
+    <main className="min-h-screen bg-[#0a0a0a] text-[#f5f5f4]">
       <Navbar />
 
       <Hero />
 
-      <section id="features" className="border-b border-white/10">
-        <div className="container-main py-20">
-          <div className="mb-12 max-w-2xl">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-violet-400">
-              // what you get
-            </p>
+      <section id="how-it-works">
+        <div className="container-main py-24 md:py-32">
+          <SectionHeading index="01" label="How it works">
+            Three inputs. <span className="text-white">One honest</span>
+            <br />
+            analysis.
+          </SectionHeading>
 
-            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
-              A clearer picture before you apply.
-            </h2>
-
-            <p className="mt-5 text-base leading-7 text-zinc-400">
-              CareerMatch AI looks beyond simple keyword matching to help you
-              understand how your profile fits the opportunity.
-            </p>
-          </div>
-
-          <div className="grid border-l border-t border-white/10 md:grid-cols-2">
-            <Feature
-              number="01"
-              title="Match score"
-              description="See an overall compatibility score based on the skills and experience found in your CV."
-            />
-
-            <Feature
-              number="02"
-              title="Strengths"
-              description="Understand which parts of your profile already align strongly with the position."
-            />
-
-            <Feature
-              number="03"
-              title="Missing skills"
-              description="Identify important skills and requirements that are not clearly represented in your CV."
-            />
-
-            <Feature
-              number="04"
-              title="Recommendations"
-              description="Get practical suggestions to improve your profile and become a stronger candidate."
-            />
-          </div>
-        </div>
-      </section>
-
-      <section id="how-it-works" className="border-b border-white/10">
-        <div className="container-main py-20">
-          <div className="mb-14">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-violet-400">
-              // how it works
-            </p>
-
-            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
-              Three inputs. One honest analysis.
-            </h2>
-          </div>
-
-          <div className="grid gap-0 border-l border-white/10 md:grid-cols-3">
+          <div className="grid gap-10 md:grid-cols-3 md:gap-8">
             <Step
               number="01"
               title="Upload your CV"
-              description="Drop your PDF or paste the text directly into CareerMatch AI."
+              description="Drop a PDF or paste the text directly."
             />
 
             <Step
               number="02"
               title="Add the job"
-              description="Paste the job description for the opportunity you want to evaluate."
+              description="Paste the description of the role you want."
             />
 
             <Step
               number="03"
               title="Get your match"
-              description="Receive your score, strengths, gaps and personalized recommendations."
+              description="Receive a score, strengths, gaps and next steps."
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div className="container-main py-24 md:py-32">
+          <SectionHeading index="02" label="What you get">
+            A <span className="text-white">clearer picture</span>
+            <br />
+            before you apply.
+          </SectionHeading>
+
+          <div className="grid border-t border-white/10 md:grid-cols-2">
+            <Feature
+              number="01"
+              title="Match score"
+              description="An overall compatibility score based on the skills and experience found in your CV."
+            />
+
+            <Feature
+              number="02"
+              title="Strengths"
+              description="The parts of your profile that already align strongly with the position."
+            />
+
+            <Feature
+              number="03"
+              title="Missing skills"
+              description="Important requirements that are not clearly represented in your CV."
+            />
+
+            <Feature
+              number="04"
+              title="Recommendations"
+              description="Practical suggestions to strengthen your profile for this role."
             />
           </div>
         </div>
@@ -90,14 +114,64 @@ export default function Home() {
 
       <Analyzer />
 
-      <footer className="border-t border-white/10">
-        <div className="container-main flex flex-col gap-3 py-10 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
-          <p>CareerMatch AI</p>
+      <footer>
+        <div className="container-main pb-10 pt-24">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
+            {footerColumns.map((column) => (
+              <div key={column.title}>
+                <p className="label mb-5">{column.title}</p>
 
-          <p>AI-powered CV & job compatibility analysis.</p>
+                <ul className="space-y-3 text-[13px] text-zinc-200">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      {"href" in link && link.href ? (
+                        <a
+                          href={link.href}
+                          className="transition hover:text-zinc-500"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        link.label
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20 border-t border-white/10 pt-8">
+            <p className="label">
+              © {new Date().getFullYear()} CareerMatch AI. All rights
+              reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </main>
+  );
+}
+
+function SectionHeading({
+  index,
+  label,
+  children,
+}: {
+  index: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mb-16 md:mb-20">
+      <p className="label mb-6">
+        {index} — {label}
+      </p>
+
+      <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-500">
+        {children}
+      </h2>
+    </div>
   );
 }
 
@@ -111,14 +185,16 @@ function Feature({
   description: string;
 }) {
   return (
-    <div className="border-b border-r border-white/10 p-7 md:p-9">
-      <span className="text-xs text-zinc-600">{number}</span>
+    <div className="flex gap-6 border-b border-white/10 py-8 md:odd:pr-10 md:even:pl-10">
+      <span className="label pt-1">{number}</span>
 
-      <h3 className="mt-10 text-xl font-medium text-white">{title}</h3>
+      <div>
+        <h3 className="text-lg text-white">{title}</h3>
 
-      <p className="mt-3 max-w-md text-sm leading-7 text-zinc-500">
-        {description}
-      </p>
+        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
+          {description}
+        </p>
+      </div>
     </div>
   );
 }
@@ -133,12 +209,12 @@ function Step({
   description: string;
 }) {
   return (
-    <div className="border-b border-r border-white/10 p-7 md:min-h-64 md:p-9">
-      <span className="text-xs text-violet-400">{number}</span>
+    <div className="border-t border-white/10 pt-6">
+      <span className="label">{number}</span>
 
-      <h3 className="mt-10 text-xl font-medium text-white">{title}</h3>
+      <h3 className="mt-8 text-lg text-white">{title}</h3>
 
-      <p className="mt-3 text-sm leading-7 text-zinc-500">{description}</p>
+      <p className="mt-2 text-sm leading-6 text-zinc-500">{description}</p>
     </div>
   );
 }

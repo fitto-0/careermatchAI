@@ -1,39 +1,30 @@
 interface ResultCardProps {
   title: string;
   items: string[];
-  icon?: string;
 }
 
-export default function ResultCard({ title, items, icon }: ResultCardProps) {
+export default function ResultCard({ title, items }: ResultCardProps) {
   return (
-    <div className="soft-card group rounded-3xl p-6 transition duration-300 hover:-translate-y-1 hover:border-violet-400/30">
-      <div className="mb-5 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          {icon && (
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-violet-400/30 bg-violet-500/10 text-lg shadow-inner shadow-violet-500/10">
-              {icon}
-            </span>
-          )}
+    <div className="bg-[#0a0a0a] p-6 md:p-8">
+      <div className="mb-6 flex items-center justify-between">
+        <h3 className="label">{title}</h3>
 
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
-        </div>
-
-        <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-300">
-          {items.length}
+        <span className="font-mono text-xs text-zinc-500">
+          {String(items.length).padStart(2, "0")}
         </span>
       </div>
 
       {items.length === 0 ? (
-        <p className="text-sm text-slate-400">No items found.</p>
+        <p className="text-sm text-zinc-500">Nothing to report.</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="divide-y divide-white/5">
           {items.map((item, index) => (
             <li
               key={`${item}-${index}`}
-              className="flex gap-3 rounded-2xl border border-white/5 bg-slate-950/20 px-3 py-2.5 text-sm leading-relaxed text-slate-200"
+              className="flex gap-4 py-3 text-sm leading-6 text-zinc-200"
             >
-              <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-500/12 text-xs text-violet-300">
-                •
+              <span className="pt-px font-mono text-xs leading-6 text-zinc-600">
+                {String(index + 1).padStart(2, "0")}
               </span>
 
               <span>{item}</span>

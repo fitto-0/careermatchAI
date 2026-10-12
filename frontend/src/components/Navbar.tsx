@@ -1,33 +1,33 @@
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0b0b0d]/90 backdrop-blur-md">
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#0a0a0a]/60 backdrop-blur-md">
       <div className="container-main flex h-16 items-center justify-between">
         <a
-          href="/"
-          className="text-[15px] font-semibold tracking-tight text-[#f5f3ef]"
+          href="#top"
+          className="font-mono text-sm tracking-tight text-white"
         >
-          CareerMatch <span className="text-violet-400">AI</span>
+          CareerMatch<span className="text-zinc-500"> AI</span>
         </a>
 
-        <div className="hidden items-center gap-8 text-sm text-zinc-400 md:flex">
-          <a href="#how-it-works" className="transition hover:text-white">
+        <div className="hidden items-center gap-8 md:flex">
+          <a href="#how-it-works" className="label transition hover:text-white">
             How it works
           </a>
 
-          <a href="#features" className="transition hover:text-white">
+          <a href="#features" className="label transition hover:text-white">
             Features
           </a>
 
-          <a href="#analyzer" className="transition hover:text-white">
+          <a href="#analyzer" className="label transition hover:text-white">
             Analyzer
           </a>
         </div>
 
         <a
           href="#analyzer"
-          className="border border-white/15 px-4 py-2 text-sm font-medium text-white transition hover:border-violet-400/50 hover:bg-violet-400/10"
+          className="border border-white/20 px-4 py-2 font-mono text-xs text-white transition hover:border-white hover:bg-white hover:text-black"
         >
-          Analyze CV →
+          Analyze CV
         </a>
       </div>
     </nav>

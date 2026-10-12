@@ -1,44 +1,48 @@
+import ParticleField from "./ParticleField";
+
 export default function Hero() {
   return (
-    <section className="subtle-grid border-b border-white/10">
-      <div className="container-main py-24 md:py-32">
-        <div className="max-w-4xl">
-          <p className="mb-7 text-xs font-medium uppercase tracking-[0.22em] text-violet-400">
-            // AI career analysis
-          </p>
+    <section
+      id="top"
+      className="relative flex min-h-160 h-svh flex-col overflow-hidden"
+    >
+      <ParticleField />
 
-          <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.045em] text-[#f5f3ef] md:text-7xl lg:text-[82px]">
-            Does your experience
+      {/* Fade the landscape into the page */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent" />
+
+      <div className="container-main relative mt-auto pb-16 pt-28 md:pb-20">
+        <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <h1 className="fade-up font-mono text-[clamp(1.75rem,5.2vw,4.2rem)] font-light leading-[1.08] tracking-[-0.03em] text-zinc-500">
+            Know if your <span className="text-white">profile</span>
             <br />
-            <span className="text-violet-400">actually match</span> this job?
+            fits the job
+            <br />
+            before you apply
           </h1>
 
-          <div className="mt-8 max-w-2xl">
-            <p className="text-lg leading-8 text-zinc-400 md:text-xl">
-              Upload your CV, add a job description, and get an honest
-              AI-powered analysis of where you stand.
+          <div className="fade-up-delay flex max-w-xs flex-col gap-6 md:items-end md:text-right">
+            <p className="text-sm leading-6 text-zinc-400">
+              Upload a CV, paste a job description, and get an honest match
+              score, skill gaps and next steps.
             </p>
+
+            <div className="flex items-center gap-5">
+              <a
+                href="#how-it-works"
+                className="font-mono text-xs text-zinc-400 transition hover:text-white"
+              >
+                How it works
+              </a>
+
+              <a
+                href="#analyzer"
+                className="bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-zinc-300"
+              >
+                Analyze my CV
+              </a>
+            </div>
           </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#analyzer"
-              className="bg-[#f5f3ef] px-6 py-3 text-sm font-semibold text-[#0b0b0d] transition hover:bg-violet-300"
-            >
-              Analyze my CV →
-            </a>
-
-            <a
-              href="#how-it-works"
-              className="border border-white/15 px-6 py-3 text-sm font-medium text-zinc-300 transition hover:border-white/30 hover:text-white"
-            >
-              See how it works
-            </a>
-          </div>
-
-          <p className="mt-7 text-xs text-zinc-600">
-            No account required · PDF or text · Powered by AI
-          </p>
         </div>
       </div>
     </section>

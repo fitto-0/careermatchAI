@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 
 import { analyzeCandidate, AnalysisResult } from "@/lib/api";
 
@@ -25,30 +25,34 @@ export default function Analyzer() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const insightCards = result
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const insights = result
     ? [
         {
           label: "Top strength",
           value: result.strengths[0] || "Strong overall profile",
-          tone: "violet",
         },
         {
           label: "Biggest gap",
           value: result.missing_skills[0] || "No major gaps detected",
-          tone: "amber",
         },
         {
           label: "Best match",
           value: result.matching_skills[0] || "Core role alignment",
-          tone: "cyan",
         },
         {
           label: "Next move",
           value: result.recommendations[0] || "Keep refining your positioning",
-          tone: "fuchsia",
         },
       ]
     : [];
+
+  useEffect(() => {
+    if (result) {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [result]);
 
   // ----------------------------------------------
   // Handle file
@@ -162,237 +166,199 @@ export default function Analyzer() {
   // ----------------------------------------------
 
   return (
-    <section
-      id="analyzer"
-      className="relative mx-auto max-w-7xl px-6 pb-24 pt-6"
-    >
-      <div className="mb-10 text-center">
-        <p className="text-sm font-medium uppercase tracking-[0.28em] text-violet-200/90">
-          Career fit analyzer
-        </p>
-        <h2 className="mt-4 text-3xl font-bold tracking-tight text-white md:text-5xl">
-          Compare your profile with the role you want.
-        </h2>
-      </div>
+    <section id="analyzer">
+      <div className="container-main py-24 md:py-32">
+        <div className="mb-16 md:mb-20">
+          <p className="label mb-6">03 — Analyzer</p>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="soft-card glow-ring rounded-[28px] p-6 md:p-7">
-          <div className="mb-5 flex items-start justify-between gap-4">
-            <div>
-              <h3 className="text-xl font-semibold text-white">Your CV</h3>
-              <p className="mt-1 text-sm text-slate-300">
-                Upload a PDF or paste the text manually.
-              </p>
+          <h2 className="font-mono text-[clamp(1.8rem,3.6vw,3rem)] font-light leading-[1.1] tracking-[-0.03em] text-zinc-500">
+            Compare your <span className="text-white">profile</span>
+            <br />
+            with the role you want.
+          </h2>
+        </div>
+
+        <div className="grid gap-px border border-white/10 bg-white/10 lg:grid-cols-2">
+          <div className="flex flex-col bg-[#0a0a0a] p-6 md:p-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="label text-white!">01 · Your CV</h3>
+              <span className="label">PDF or text</span>
             </div>
-            <span className="rounded-full border border-violet-300/30 bg-violet-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-violet-100">
-              Step 1
-            </span>
-          </div>
 
-          {!cvFile ? (
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`cursor-pointer rounded-3xl border-2 border-dashed p-10 text-center transition duration-200 ${
-                dragActive
-                  ? "border-violet-400 bg-violet-500/12"
-                  : "border-white/10 bg-slate-950/30 hover:border-violet-400/60 hover:bg-violet-500/6"
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,application/pdf"
-                onChange={handleFileChange}
-                className="hidden"
-              />
+            {!cvFile ? (
+              <div
+                role="button"
+                tabIndex={0}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                className={`cursor-pointer border border-dashed px-6 py-10 text-center outline-none transition focus-visible:border-white ${
+                  dragActive
+                    ? "border-white bg-white/5"
+                    : "border-white/15 hover:border-white/40 hover:bg-white/2"
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,application/pdf"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
 
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-violet-500/15 to-cyan-400/10 text-3xl">
-                📄
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="mx-auto h-7 w-7 text-zinc-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                >
+                  <path d="M12 16V4m0 0-4 4m4-4 4 4M5 20h14" />
+                </svg>
+
+                <p className="mt-4 text-sm text-white">
+                  Drop your PDF here or click to browse
+                </p>
+
+                <p className="label mt-2">PDF only · up to 10 MB</p>
               </div>
-
-              <h4 className="mt-4 text-lg font-semibold text-white">
-                Upload your CV
-              </h4>
-
-              <p className="mt-2 text-sm text-slate-300">
-                Drag & drop your PDF here or click to browse
-              </p>
-
-              <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-500">
-                PDF only • up to 10 MB
-              </p>
-            </div>
-          ) : (
-            <div className="rounded-[22px] border border-violet-400/30 bg-violet-500/10 p-4">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-500/20 text-xl">
-                    📄
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="truncate font-medium text-white">
-                      {cvFile.name}
-                    </p>
-                    <p className="text-xs text-slate-300">
-                      {(cvFile.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
+            ) : (
+              <div className="flex items-center justify-between gap-4 border border-white/20 px-4 py-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm text-white">{cvFile.name}</p>
+                  <p className="font-mono text-xs text-zinc-500">
+                    {(cvFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
                 </div>
 
                 <button
                   onClick={removeFile}
-                  className="rounded-xl border border-red-400/30 bg-red-500/8 px-3 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500/15"
+                  className="font-mono text-xs text-zinc-400 transition hover:text-white"
                 >
                   Remove
                 </button>
               </div>
-            </div>
-          )}
+            )}
 
-          {!cvFile && (
-            <>
-              <div className="my-6 flex items-center gap-4">
-                <div className="h-px flex-1 bg-white/10" />
-                <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
-                  or
-                </span>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
+            {!cvFile && (
+              <>
+                <div className="my-6 flex items-center gap-4">
+                  <div className="h-px flex-1 bg-white/10" />
+                  <span className="label">or</span>
+                  <div className="h-px flex-1 bg-white/10" />
+                </div>
 
-              <textarea
-                value={cvText}
-                onChange={(event) => setCvText(event.target.value)}
-                placeholder="Paste your CV text here..."
-                className="min-h-65 w-full resize-none rounded-[22px] border border-white/10 bg-slate-950/25 p-4 text-sm leading-relaxed text-white outline-none transition placeholder:text-slate-500 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/20"
-              />
-            </>
-          )}
-        </div>
-
-        <div className="soft-card glow-ring rounded-[28px] p-6 md:p-7">
-          <div className="mb-5 flex items-start justify-between gap-4">
-            <div>
-              <h3 className="text-xl font-semibold text-white">
-                Job description
-              </h3>
-              <p className="mt-1 text-sm text-slate-300">
-                Share the role you want to match against.
-              </p>
-            </div>
-            <span className="rounded-full border border-cyan-300/30 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-100">
-              Step 2
-            </span>
+                <textarea
+                  value={cvText}
+                  onChange={(event) => setCvText(event.target.value)}
+                  placeholder="Paste your CV text here..."
+                  aria-label="CV text"
+                  className="min-h-56 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-600 focus:border-white/40"
+                />
+              </>
+            )}
           </div>
 
-          <textarea
-            value={jobDescription}
-            onChange={(event) => setJobDescription(event.target.value)}
-            placeholder="Paste the job description here..."
-            className="min-h-105 w-full resize-none rounded-[22px] border border-white/10 bg-slate-950/25 p-4 text-sm leading-relaxed text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
-          />
+          <div className="flex flex-col bg-[#0a0a0a] p-6 md:p-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="label text-white!">02 · Job description</h3>
+              <span className="label">Text</span>
+            </div>
+
+            <textarea
+              value={jobDescription}
+              onChange={(event) => setJobDescription(event.target.value)}
+              placeholder="Paste the job description here..."
+              aria-label="Job description"
+              className="min-h-96 w-full flex-1 resize-none border border-white/10 bg-transparent p-4 text-sm leading-6 text-white outline-none transition placeholder:font-mono placeholder:text-xs placeholder:text-zinc-600 focus:border-white/40"
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="mt-8 text-center">
-        <button
-          onClick={handleAnalyze}
-          disabled={loading}
-          className="rounded-full border border-white/10 bg-white/4 px-7 py-3.5 text-sm font-semibold text-slate-200 transition hover:border-violet-300/40 hover:bg-white/8"
-        >
-          {loading ? "Analyzing your profile..." : "✨ Analyze compatibility"}
-        </button>
-      </div>
+        <div className="mt-6 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="label">Takes about 10 seconds</p>
 
-      {error && (
-        <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-red-400/25 bg-red-500/10 p-4 text-center text-sm text-red-200">
-          {error}
+          <button
+            onClick={handleAnalyze}
+            disabled={loading}
+            className="bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-zinc-300 disabled:cursor-wait disabled:opacity-50"
+          >
+            {loading ? "Analyzing..." : "Analyze compatibility"}
+          </button>
         </div>
-      )}
 
-      {loading && <LoadingState />}
+        {error && (
+          <p
+            role="alert"
+            className="mt-6 border border-red-400/30 px-4 py-3 font-mono text-xs text-red-300"
+          >
+            Error — {error}
+          </p>
+        )}
 
-      {result && !loading && (
-        <div id="insights" className="mt-16 space-y-8">
-          <div className="soft-card glow-ring rounded-4xl p-8 text-center md:p-10">
-            <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:text-left">
+        {loading && <LoadingState />}
+
+        {result && !loading && (
+          <div ref={resultsRef} id="insights" className="scroll-mt-20 pt-24">
+            <p className="label mb-10">04 — Result</p>
+
+            <div className="grid gap-12 border-b border-white/10 pb-16 lg:grid-cols-2 lg:gap-20">
               <ScoreCircle score={result.match_score} />
 
-              <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-violet-200/80">
-                  Compatibility
-                </p>
+              <div className="lg:pt-4">
+                <p className="label">Compatibility</p>
 
-                <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">
+                <h3 className="mt-4 font-mono text-3xl font-light tracking-tight text-white md:text-4xl">
                   {result.compatibility}
-                </h2>
+                </h3>
 
-                <p className="mt-4 text-base leading-relaxed text-slate-300">
+                <p className="mt-6 leading-7 text-zinc-400">
                   {result.summary}
                 </p>
               </div>
             </div>
-          </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {insightCards.map((item) => (
-              <div
-                key={item.label}
-                className="soft-card rounded-3xl p-5 text-left transition hover:-translate-y-1 hover:border-violet-400/30"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                    {item.label}
-                  </span>
-                  <span
-                    className={`h-2.5 w-2.5 rounded-full ${
-                      item.tone === "violet"
-                        ? "bg-violet-400"
-                        : item.tone === "amber"
-                          ? "bg-amber-400"
-                          : item.tone === "cyan"
-                            ? "bg-cyan-400"
-                            : "bg-fuchsia-400"
-                    }`}
-                  />
+            <div className="grid grid-cols-1 gap-x-6 gap-y-10 border-b border-white/10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+              {insights.map((item) => (
+                <div key={item.label}>
+                  <p className="label mb-4">{item.label}</p>
+                  <p className="text-[13px] leading-6 text-zinc-200">
+                    {item.value}
+                  </p>
                 </div>
+              ))}
+            </div>
 
-                <p className="text-sm leading-relaxed text-slate-200">
-                  {item.value}
-                </p>
+            <div className="mt-16 grid gap-px border border-white/10 bg-white/10 md:grid-cols-2">
+              <ResultCard title="Strengths" items={result.strengths} />
+              <ResultCard title="Weaknesses" items={result.weaknesses} />
+              <ResultCard
+                title="Matching skills"
+                items={result.matching_skills}
+              />
+              <ResultCard
+                title="Missing skills"
+                items={result.missing_skills}
+              />
+              <div className="md:col-span-2">
+                <ResultCard
+                  title="Recommendations"
+                  items={result.recommendations}
+                />
               </div>
-            ))}
+            </div>
           </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            <ResultCard title="Strengths" icon="💪" items={result.strengths} />
-            <ResultCard
-              title="Weaknesses"
-              icon="⚠️"
-              items={result.weaknesses}
-            />
-            <ResultCard
-              title="Matching Skills"
-              icon="✅"
-              items={result.matching_skills}
-            />
-            <ResultCard
-              title="Missing Skills"
-              icon="❌"
-              items={result.missing_skills}
-            />
-          </div>
-
-          <ResultCard
-            title="Recommendations"
-            icon="🚀"
-            items={result.recommendations}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
+
